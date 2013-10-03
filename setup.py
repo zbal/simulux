@@ -4,7 +4,7 @@ import sys
 import shutil
 
 sys.path.insert(0, os.path.abspath('lib'))
-from simulinux import __version__, __author__
+from simulux import __version__, __author__
 try:
     from setuptools import setup
 except ImportError:

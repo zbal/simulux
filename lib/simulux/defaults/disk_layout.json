@@ -1,0 +1,350 @@
+{
+    "disks": {
+        "/dev/sda": {
+            "size": 111111111,
+            "partitions": [
+                "/dev/sda1",
+                "/dev/sda2"
+            ]
+        }
+    },
+    "partitions": {
+        "/dev/sda1": {
+            "size": 111111,
+            "used": 1111,
+            "mount": "/boot"
+        },
+        "/dev/sda2": {
+            "size": 111000000,
+            "used": 1000000,
+            "mount": "/"
+        }
+    },
+    "files": {
+        "/": {
+            "bin": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "dev": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "etc": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {
+                    "hosts": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "hostname": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "fstab": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "passwd": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "group": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "init.d": {
+                        "filetype": "folder",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "ld.so.conf": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "modules": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "network": {
+                        "filetype": "folder",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "profile": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "rc.local": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 644
+                    },
+                    "shadow": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 600
+                    },
+                    "sudoers": {
+                        "filetype": "file",
+                        "size": 11,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 600
+                    }
+                }
+            },
+            "home": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "lib": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "lib64": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "lost+found": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "mnt": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "opt": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "proc": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "root": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 700,
+                "content": {}
+            },
+            "sbin": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "sys": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {}
+            },
+            "tmp": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 777,
+                "content": {}
+            },
+            "usr": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {
+                    "bin": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "include": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "lib": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "local": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "sbin": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "share": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "src": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    }
+                }
+            },
+            "var": {
+                "filetype": "folder",
+                "size": 1111,
+                "owner": "root",
+                "group": "root",
+                "mode": 755,
+                "content": {
+                    "lib": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "log": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "mail": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "opt": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    },
+                    "spool": {
+                        "filetype": "folder",
+                        "size": 111,
+                        "owner": "root",
+                        "group": "root",
+                        "mode": 755,
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/boot": {
+
+        }
+    }
+}

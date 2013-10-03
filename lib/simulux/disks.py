@@ -1,7 +1,7 @@
 import os
 import json
 
-DEFAULT_LAYOUT = 'default_layout.json'
+DEFAULT_LAYOUT = os.path.join(os.path.dirname(__file__), 'defaults/disk_layout.json')
 
 def load_layout(layout_file=None):
     '''
@@ -36,12 +36,12 @@ class Disks(object):
         # Add default layout
         self.add_layout()
 
-    def add_layout(self, layout_file):
+    def add_layout(self, layout_file=None):
         '''
         Add an extra disk layout definition; override any existing disk, partition
         and file
         '''
-        layout = load_layout()
+        layout = load_layout(layout_file)
 
         self.disks.update(layout.get('disks', {}))
         self.partitions.update(layout.get('partitions', {}))
@@ -67,12 +67,12 @@ class Disks(object):
                         part.get('mount') == root ]
             if len(partitions) == 1:
                 partition = partitions[0]
-            else
+            else:
                 print "Associated partition with mount point %s is missing" % (root,)
                 partition = {}
             # Cheating ownership (for now)
             result = {
-                'mount': True
+                'mount': True,
                 'size': partition.get('used', 0),
                 'owner': 'root',
                 'group': 'root',
@@ -100,7 +100,8 @@ class Disks(object):
         Return an array of path that are direct childrens of the provided path
         '''
         childrens = [ child for child, data in self.files.iteritems() if 
-                        child.startswith(path) and os.path.dirname(child) == path ]
+                        child.startswith(path) and os.path.dirname(child) == path 
+                        and child != path ]
         return childrens
 
     def get_parent_path(self, path):
@@ -157,9 +158,9 @@ class Disks(object):
                 prev_size = details.get('size')
                 new_size = int(v)
                 self._update_parent_size(path, new_size - prev_size)
-                details.update({k, new_size})
+                details.update({k: new_size})
             else:
-                details.update({k, v})
+                details.update({k: v})
         self.files.update({path: details})
 
     def remove_file(self, path):
@@ -177,7 +178,7 @@ class Disks(object):
         if size == 0:
             del self.files[path]
             return True
-        self._update_parent_size(path, size)
+        self._update_parent_size(path, -size)
         del self.files[path]
         return True
 
@@ -186,7 +187,7 @@ class Disks(object):
         Update the size recusively until the 'mount'
         '''
         # We want to manipulate the parent of the provided path
-        parent_path = get_parent_path(path)
+        parent_path = self.get_parent_path(path)
 
         details = self.get_details(parent_path)
         new_size = details.get('size') + size
