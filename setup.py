@@ -2,6 +2,7 @@
 import os
 import sys
 import shutil
+from glob import glob
 
 sys.path.insert(0, os.path.abspath('lib'))
 from simulux import __version__, __author__
@@ -9,6 +10,10 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+
+from simulux.constants import DIST_DEFAULTS_PATH
+data_files = []
+data_files.append((DIST_DEFAULTS_PATH, glob('./defaults/*')))
 
 setup(
     name='simulux',
@@ -21,5 +26,6 @@ setup(
     package_dir={ 'simulux': 'lib/simulux' },
     packages=[
        'simulux'
-    ]
+    ],
+    data_files=data_files
 )

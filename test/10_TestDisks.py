@@ -178,3 +178,70 @@ def test_remove_file():
         'mode': 755
     }
     assert jsonify(details) == jsonify(expected)
+
+def test_remove_folder():
+    '''
+    Test folder removal - fail on non recursive
+    '''
+    disks.remove_file('/etc')
+    details = disks.get_details('/etc')
+    # Fail - not deleted
+    expected = {
+        'filetype': 'folder',
+        'size': 1111,
+        'owner': 'root',
+        'group': 'root',
+        'mode': 755
+    }
+    assert jsonify(details) == jsonify(expected)
+    disks.remove_file('/etc', recursive=True)
+    details = disks.get_details('/etc')
+    # Fail - not deleted
+    expected = {}
+    assert jsonify(details) == jsonify(expected)
+    details = disks.get_details('/')
+    expected = {
+        'mount': True,
+        'size': 998889,
+        'owner': 'root',
+        'group': 'root',
+        'mode': 755
+    }
+    assert jsonify(details) == jsonify(expected)
+
+def test_remove_mount():
+    '''
+    Test mount point folder removal - fail
+    '''
+    disks.remove_file('/boot')
+    details = disks.get_details('/boot')
+    # Fail - not deleted
+    expected = {
+        'mount': True,
+        'size': 1111,
+        'owner': 'root',
+        'group': 'root',
+        'mode': 755
+    }
+    assert jsonify(details) == jsonify(expected)
+    disks.remove_file('/boot', recursive=True)
+    details = disks.get_details('/boot')
+    # Fail - not deleted
+    expected = {
+        'mount': True,
+        'size': 1111,
+        'owner': 'root',
+        'group': 'root',
+        'mode': 755
+    }
+    assert jsonify(details) == jsonify(expected)
+    details = disks.get_details('/')
+    # Unchanged from previous test and not propagated since other mount point
+    expected = {
+        'mount': True,
+        'size': 998889,
+        'owner': 'root',
+        'group': 'root',
+        'mode': 755
+    }
+    assert jsonify(details) == jsonify(expected)

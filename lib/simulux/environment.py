@@ -15,8 +15,8 @@ class Environment(object):
         Add a server to the Environment
         '''
         server = {}
-        server.update({'memory': Memory(details.get('memory'))})
-        server.update({'disks': Disks(details.get('disks'))})
+        server.update({'memory': Memory(details.get('memory', {}))})
+        server.update({'disks': Disks()})
         return server
 
     def add_disks(self, name, layout):

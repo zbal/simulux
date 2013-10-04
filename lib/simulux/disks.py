@@ -1,7 +1,9 @@
 import os
 import json
+import operator
+from simulux.constants import DIST_DEFAULTS_PATH
 
-DEFAULT_LAYOUT = os.path.join(os.path.dirname(__file__), 'defaults/disk_layout.json')
+DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disk_layout.json')
 
 def load_layout(layout_file=None):
     '''
@@ -95,6 +97,27 @@ class Disks(object):
                 del data['content']
             self.files.update({root: data})
 
+    def exists(self, path):
+        '''
+        Return if a path exists in the tree
+        '''
+        if path in self.files:
+            return True
+        return False
+
+    def is_folder(self, path):
+        '''
+        Return whether a path is a folder
+        '''
+        if not self.exists(path):
+            return False
+        details = self.get_details(path)
+        if details.get('mount') == True:
+            return True
+        if details.get('filetype') == 'folder':
+            return True
+        return False
+
     def get_childrens_path(self, path):
         '''
         Return an array of path that are direct childrens of the provided path
@@ -163,17 +186,28 @@ class Disks(object):
                 details.update({k: v})
         self.files.update({path: details})
 
-    def remove_file(self, path):
+    def remove_file(self, path, recursive=False):
         '''
         Remove file/folder, releasing used space.
         Can not remove if; not existing or mount point
         '''
+        # Handle recursivity first...
+        if recursive:
+            childrens = self.get_childrens_path(path)
+            for child_path in childrens:
+                success = self.remove_file(child_path, recursive=True)
+                if not success:
+                    return False
+
         details = self.get_details(path)
         if not details:
             return False
         size = details.get('size', 0)
         if details.get('mount') == True:
-            print '%s: is a mount point; it can not be removed' % (path,)
+            print "rm: cannot remove `%s': Device or resource busy" % (path,)
+            return False
+        if details.get('filetype') == 'folder' and not recursive:
+            print "rm: cannot remove `%s': Is a directory" % (path,)
             return False
         if size == 0:
             del self.files[path]
