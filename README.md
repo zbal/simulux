@@ -46,3 +46,8 @@ and Networking.
 
 Ability to simulate several systems working in pair; simulating remote
 access over SSH, simulate impact from one system against another.
+
+# Long term
+
+Being able to use the same approach for other simulator that could integrate with
+this one; like mysql CLI simulator, pgsql, redis, etc. 
