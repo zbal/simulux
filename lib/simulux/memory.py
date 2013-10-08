@@ -55,47 +55,61 @@ class Memory(object):
         self.data.update({'cached': layout.get('cached')})
         self.data.update({'total': layout.get('total')})
     
-    def set_used(self, size):
+    def set(self, mem_type, size):
         '''
-        Set used memory updates the free memory available
+        Set memory mem_type to size
         '''
-        self.data.update({'used': int(size)})
-        self.data.update({'free': self.data.get('total') - self.data.get('used')})
-    
-    def set_free(self, size):
+        # TODO:
+        # - ensure size is within limits
+        # - update shared/cached/buffer dynamically and s + c + b < used
+        size = int(size)
+        prev = self.data.get(mem_type, 0)
+        diff = size - prev
+        if mem_type in ['shared', 'cached', 'buffers']:
+            # Takes memory from free and apply to used
+            self.data[mem_type] = size
+            self.data['free'] -= diff
+            self.data['used'] += diff
+            return True
+        if mem_type == 'used':
+            self.data['used'] = size
+            self.data['free'] -= diff
+            return True
+        if mem_type == 'free':
+            self.data['free'] = size
+            self.data['used'] -= diff
+            return True
+        if mem_type == 'total':
+            # Need to ensure total mem change maintains all memory
+            # can only reduce if diff < free
+            if diff < 0 and abs(diff) > self.data['free']:
+                print 'Not enough memory to allow shrink - would OOM...'
+                return False
+            self.data['total'] = size
+            self.data['free'] += diff
+            return True
+
+    def update(self, mem_type, size):
         '''
-        Set free memory updates the used memory
-        '''
-        self.data.update({'free': int(size)})
-        self.data.update({'used': self.data.get('total') - self.data.get('free')})
-    
-    def set_shared(self, size):
-        '''
-        Setting shared memory updates the used memory and 
+        Update memory mem_type by size (+/-)
         '''
         size = int(size)
-        diff = self.data.get('shared') - size
-        self.data.update({'shared': size})
-        self.set_used(self.data.get('used') - diff)
-    
-    def set_buffers(self, size):
-        '''
-        Setting buffers memory updates the used memory and 
-        '''
-        size = int(size)
-        diff = self.data.get('buffers') - size
-        self.data.update({'buffers': size})
-        self.set_used(self.data.get('used') - diff)
-    
-    def set_cached(self, size):
-        '''
-        Setting buffers memory updates the used memory and 
-        '''
-        size = int(size)
-        diff = self.data.get('cached') - size
-        self.data.update({'cached': size})
-        self.set_used(self.data.get('used') - diff)
-    
+        if mem_type in ['shared', 'cached', 'buffers']:
+            # Takes memory from free and apply to used
+            self.data[mem_type] += size
+            self.data['free'] -= size
+            self.data['used'] += size
+            return True
+        if mem_type == 'used':
+            self.data['used'] += size
+            self.data['free'] -= size
+            return True
+        if mem_type == 'free':
+            self.data['free'] += size
+            self.data['used'] -= size
+            return True
+        return False
+        
     def dump(self):
         '''
         Return the full memory details

@@ -1,0 +1,56 @@
+[
+    {
+        "name": "init",
+        "pid": 1,
+        "ppid": 0,
+        "state": "S",
+        "threads": 1,
+        "uid": "root",
+        "gid": "root",
+        "memory": {
+            "rss": 1024,
+            "virt": 1024
+        },
+        "cpus": {
+            "user": 1.0,
+            "system": 1.0,
+            "iowait": 1.0
+        }
+    },
+    {
+        "name": "bash",
+        "pid": 2,
+        "ppid": 0,
+        "state": "S",
+        "threads": 1,
+        "uid": "root",
+        "gid": "root",
+        "memory": {
+            "rss": 1024,
+            "virt": 1024
+        },
+        "cpus": {
+            "user": 1.0,
+            "system": 1.0,
+            "iowait": 1.0
+        }
+    },
+    {
+        "name": "ps",
+        "pid": 3,
+        "ppid": 0,
+        "state": "S",
+        "threads": 1,
+        "uid": "root",
+        "gid": "root",
+        "memory": {
+            "rss": 1024,
+            "virt": 1024
+        },
+        "cpus": {
+            "user": 1.0,
+            "system": 1.0,
+            "iowait": 1.0
+        }
+    }
+]

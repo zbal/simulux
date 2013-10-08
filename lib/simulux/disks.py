@@ -2,7 +2,7 @@ import os
 from simulux.utils import load_json
 from simulux.constants import DIST_DEFAULTS_PATH
 
-DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disk_layout.json')
+DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disks_layout.json')
 
 def load_layout(layout_file=None):
     '''
