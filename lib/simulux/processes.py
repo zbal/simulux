@@ -53,7 +53,30 @@ class Processes(object):
                 disks=self.disks,
                 memory=self.memory
             )
-            self.processes.update({process.get('pid'): process})
+            self.processes.update({process.config.get('pid'): process})
+
+    def kill_process(self, pid):
+        '''
+        Kill the process defined by pid
+        '''
+        if not pid in self.processes:
+            print 'kill: (%s) - No such process' % (pid,)
+            return False
+        # Destroy process instance (and release resources ?)
+        del self.processes[pid]
+
+    def killall_process(self, name):
+        '''
+        Kill all the processes that use `name` as .. name
+        '''
+        pids = []
+        # Prepare list of process to kill
+        for pid, process in self.processes.iteritems():
+            if process.config.get('name') == name:
+                pids.append(pid)
+        # Go on a rampage
+        for pid in pids:
+            self.kill_process(pid)
 
 class Process(object):
     """Define a Process object"""
@@ -82,7 +105,7 @@ class Process(object):
         # TODO - split per type of resource ?
         cpus = self.config.get('cpus', {})
         for cpu_type, value in cpus.iteritems():
-            self.cpus.set_cpu(cpu_type, value)
+            self.cpus.update(cpu_type, value)
 
         memory = self.config.get('memory', {})
         for mem_type, value in memory.iteritems():
@@ -95,4 +118,13 @@ class Process(object):
         '''
         Release the resources allocated to the process
         '''
-        pass
+        cpus = self.config.get('cpus', {})
+        for cpu_type, value in cpus.iteritems():
+            self.cpus.update(cpu_type, -value)
+
+        memory = self.config.get('memory', {})
+        for mem_type, value in memory.iteritems():
+            # Only care about RSS for the moment
+            if mem_type != 'rss':
+                continue
+            self.memory.update('used', -value)
