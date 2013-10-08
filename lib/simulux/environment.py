@@ -22,9 +22,9 @@ class Environment(object):
         server.update({'cpus': CPUS()})
         server.update({
             'processes': Processes(
-                cpus=server.cpus, 
-                memory=server.memory,
-                disks=server.disks
+                cpus=server.get('cpus'), 
+                memory=server.get('memory'),
+                disks=server.get('disks')
             )
         })
         return server

@@ -117,31 +117,6 @@ class CPUS(object):
             print 'Invalid CPU type: %s' % (cpu_type,)
             return False
 
-        # # Check and cast the values to float
-        # if type(value) == list:
-        #     if len(value) != self.cores:
-        #         print 'Wrong number of cores provided in value %s' % (value,)
-        #         return False
-        #     for idx in range(self.cores):
-        #         if type(value[idx]) == int:
-        #             value[idx] = float(value[idx])
-        #         if type(value[idx]) != float:
-        #             print 'Invalid value %s (type: %s) for CPU type %s' % (
-        #                     value[idx], type(value[idx]), cpu_type,)
-        #             return False
-        # else:
-        #     # Force value to array
-        #     if type(value) == int:
-        #         value = float(value)
-        #     if type(value) != float:
-        #         print 'Invalid value %s (type: %s) for CPU type %s' % (
-        #                 value[idx], type(value[idx]), cpu_type,)
-        #         return False
-        #     cpu_arr = []
-        #     for idx in range(self.cores):
-        #         cpu_arr.append(float(value))
-        #     value = cpu_arr
-
         # Convert the diff value to an array of float
         value = self._value_to_list(value)
 
@@ -179,30 +154,6 @@ class CPUS(object):
 
         # Convert the diff value to an array of float
         diff = self._value_to_list(diff)
-
-        # if type(diff) == list:
-        #     if len(diff) != self.cores:
-        #         print 'Wrong number of cores provided in value %s' % (diff,)
-        #         return False
-        #     for idx in range(self.cores):
-        #         if type(diff[idx]) == int:
-        #             diff[idx] = float(diff[idx])
-        #         if type(diff[idx]) != float:
-        #             print 'Invalid value %s (type: %s) for CPU type %s' % (
-        #                     diff[idx], type(diff[idx]), cpu_type,)
-        #             return False
-        # else:
-        #     # Force diff to array
-        #     if type(diff) == int:
-        #         diff = float(diff)
-        #     if type(diff) != float:
-        #         print 'Invalid value %s (type: %s) for CPU type %s' % (
-        #                 diff[idx], type(diff[idx]), cpu_type,)
-        #         return False
-        #     cpu_arr = []
-        #     for idx in range(self.cores):
-        #         cpu_arr.append(float(diff))
-        #     diff = cpu_arr
 
         # Compare CPU and prepare absolute value
         prev = self.get(cpu_type)
