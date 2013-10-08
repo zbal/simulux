@@ -1,0 +1,8 @@
+{
+    "free": 4096,
+    "used": 0,
+    "shared": 0,
+    "cached": 0,
+    "buffers": 0,
+    "total": 4096
+}

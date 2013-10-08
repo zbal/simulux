@@ -1,5 +1,7 @@
 from disks import Disks
 from memory import Memory
+from cpus import CPUS
+from processes import Processes
 
 class Environment(object):
     """
@@ -15,8 +17,16 @@ class Environment(object):
         Add a server to the Environment
         '''
         server = {}
-        server.update({'memory': Memory(details.get('memory', {}))})
+        server.update({'memory': Memory()})
         server.update({'disks': Disks()})
+        server.update({'cpus': CPUS()})
+        server.update({
+            'processes': Processes(
+                cpus=server.cpus, 
+                memory=server.memory,
+                disks=server.disks
+            )
+        })
         return server
 
     def add_disks(self, name, layout):

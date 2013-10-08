@@ -1,5 +1,5 @@
 import os
-import json
+from simulux.utils import load_json
 from simulux.constants import DIST_DEFAULTS_PATH
 
 DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disk_layout.json')
@@ -10,12 +10,7 @@ def load_layout(layout_file=None):
     '''
     if not layout_file:
         layout_file = DEFAULT_LAYOUT
-    try:
-        content = json.loads(open(layout_file).read())
-    except Exception as e:
-        print 'Error loading disk layout: %s' % (e,)
-        content = {}
-    return content
+    return load_json(layout_file)
 
 '''
 Disk object 
