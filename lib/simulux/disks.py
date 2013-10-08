@@ -1,6 +1,5 @@
 import os
 import json
-import operator
 from simulux.constants import DIST_DEFAULTS_PATH
 
 DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disk_layout.json')
