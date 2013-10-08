@@ -81,7 +81,7 @@ class CPUS(object):
         }
         return cpus
 
-    def get_cpu(self, cpu_type, avg=True):
+    def get(self, cpu_type, avg=False):
         '''
         Get the cpus details per type (idle, nice, system, iowait, etc.).
         By default averaged across all CPUs. Else return array of per CPU details
@@ -104,7 +104,7 @@ class CPUS(object):
             total += float(self.data[cpu_type][idx])
         return total / len(self.data[cpu_type])
 
-    def set_cpu(self, cpu_type, value):
+    def set(self, cpu_type, value):
         '''
         Set the CPU for the specific cpu_type to value. Propagate the change to
         idle.
@@ -116,27 +116,34 @@ class CPUS(object):
                              'steal', 'guest', 'idle' ] :
             print 'Invalid CPU type: %s' % (cpu_type,)
             return False
-        # Check and cast the values to float
-        if type(value) == list:
-            for idx in range(self.cores):
-                if type(value[idx]) == int:
-                    value[idx] = float(value[idx])
-                if type(value[idx]) != float:
-                    print 'Invalid value %s (type: %s) for CPU type %s' % (
-                            value[idx], type(value[idx]), cpu_type,)
-                    return False
-        else:
-            # Force value to array
-            if type(value) == int:
-                value = float(value)
-            if type(value) != float:
-                print 'Invalid value %s (type: %s) for CPU type %s' % (
-                        value[idx], type(value[idx]), cpu_type,)
-                return False
-            cpu_arr = []
-            for idx in range(self.cores):
-                cpu_arr.append(float(value))
-            value = cpu_arr
+
+        # # Check and cast the values to float
+        # if type(value) == list:
+        #     if len(value) != self.cores:
+        #         print 'Wrong number of cores provided in value %s' % (value,)
+        #         return False
+        #     for idx in range(self.cores):
+        #         if type(value[idx]) == int:
+        #             value[idx] = float(value[idx])
+        #         if type(value[idx]) != float:
+        #             print 'Invalid value %s (type: %s) for CPU type %s' % (
+        #                     value[idx], type(value[idx]), cpu_type,)
+        #             return False
+        # else:
+        #     # Force value to array
+        #     if type(value) == int:
+        #         value = float(value)
+        #     if type(value) != float:
+        #         print 'Invalid value %s (type: %s) for CPU type %s' % (
+        #                 value[idx], type(value[idx]), cpu_type,)
+        #         return False
+        #     cpu_arr = []
+        #     for idx in range(self.cores):
+        #         cpu_arr.append(float(value))
+        #     value = cpu_arr
+
+        # Convert the diff value to an array of float
+        value = self._value_to_list(value)
 
         # We have values as an array of floats that we can use to modify the
         # other CPU info accordingly
@@ -159,3 +166,82 @@ class CPUS(object):
         # Now set the value of the cpu 
         self.data[cpu_type] = value
         return True
+
+    def update(self, cpu_type, diff):
+        '''
+        Update cpu_type data using diff
+        '''
+        # Ensure the CPU type passed as arg
+        if not cpu_type in [ 'user', 'nice', 'system', 'iowait', 'irq', 'soft',
+                             'steal', 'guest', 'idle' ] :
+            print 'Invalid CPU type: %s' % (cpu_type,)
+            return False
+
+        # Convert the diff value to an array of float
+        diff = self._value_to_list(diff)
+
+        # if type(diff) == list:
+        #     if len(diff) != self.cores:
+        #         print 'Wrong number of cores provided in value %s' % (diff,)
+        #         return False
+        #     for idx in range(self.cores):
+        #         if type(diff[idx]) == int:
+        #             diff[idx] = float(diff[idx])
+        #         if type(diff[idx]) != float:
+        #             print 'Invalid value %s (type: %s) for CPU type %s' % (
+        #                     diff[idx], type(diff[idx]), cpu_type,)
+        #             return False
+        # else:
+        #     # Force diff to array
+        #     if type(diff) == int:
+        #         diff = float(diff)
+        #     if type(diff) != float:
+        #         print 'Invalid value %s (type: %s) for CPU type %s' % (
+        #                 diff[idx], type(diff[idx]), cpu_type,)
+        #         return False
+        #     cpu_arr = []
+        #     for idx in range(self.cores):
+        #         cpu_arr.append(float(diff))
+        #     diff = cpu_arr
+
+        # Compare CPU and prepare absolute value
+        prev = self.get(cpu_type)
+        value = []
+        for idx in range(self.cores):
+            value.append(prev[idx] + diff[idx])
+
+        # Apply new CPU
+        success = self.set(cpu_type, value)
+        return success
+
+    def _value_to_list(self, value):
+        '''
+        Ensure a provided value is matching the list requirements ...
+        '''
+        # TODO: better catch-phrase !
+        # Check and cast the values to float
+        result = []
+
+        if type(value) == list:
+            if len(value) != self.cores:
+                print 'Wrong number of cores provided in value %s' % (value,)
+                return False
+            for idx in range(self.cores):
+                if type(value[idx]) in [int, float]:
+                    result.append(float(value[idx]))
+                else:
+                    print 'Invalid value %s (type: %s)' % (value[idx], type(value[idx]),)
+                    return False
+        else:
+            # Force value to array
+            if type(value) in [int, float]:
+                value = float(value)
+            else:
+                print 'Invalid value %s (type: %s)' % (value, type(value),)
+                return False
+
+            for idx in range(self.cores):
+                result.append(float(value))
+
+        return result
+
