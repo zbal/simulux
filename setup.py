@@ -5,7 +5,7 @@ import shutil
 from glob import glob
 
 sys.path.insert(0, os.path.abspath('lib'))
-from simulux import __version__, __author__
+from simulux import __version__, __author__, __author_email__
 try:
     from setuptools import setup
 except ImportError:
@@ -21,7 +21,7 @@ setup(
     description='Simulator for linux',
     url = 'https://github.com/zbal/simulux',
     author=__author__,
-    author_email='vincent.viallet@gmail.com',
+    author_email=__author_email__,
     license='MIT',
     package_dir={ 'simulux': 'lib/simulux' },
     packages=[
