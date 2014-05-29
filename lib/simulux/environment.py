@@ -18,7 +18,7 @@ class Environment(object):
         '''
         server = {}
         server.update({'memory': Memory()})
-        server.update({'disks': Disks()})
+        server.update({'disks': Disks(details.get('scenario_name',None))})
         server.update({'cpus': CPUS()})
         server.update({
             'processes': Processes(
