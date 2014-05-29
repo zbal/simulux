@@ -1,6 +1,6 @@
 import os
 from simulux.utils import load_json
-from simulux.constants import DIST_DEFAULTS_PATH
+from simulux.constants import DIST_DEFAULTS_PATH, FILES_DEFAULT_PATH
 
 DEFAULT_LAYOUT = os.path.join(DIST_DEFAULTS_PATH, 'disks_layout.json')
 
@@ -23,6 +23,7 @@ Defines the operaton related to the Disk, including:
 
 class Disks(object):
     """Define a Disks object"""
+<<<<<<< HEAD
     def __init__(self, conf=None):
         super(Disks, self).__init__()
         
@@ -120,6 +121,17 @@ class Disks(object):
         if details.get('mount') == True:
             return True
         if details.get('filetype') == 'folder':
+            return True
+        return False
+        
+    def is_file(self, path):
+        '''
+        Return whether a path is a file
+        '''
+        if not self.exists(path):
+            return False
+        details = self.get_details(path)
+        if details.get('filetype') == 'file':
             return True
         return False
 
@@ -237,3 +249,29 @@ class Disks(object):
             return
         # Else recurse to the parent
         self._update_parent_size(parent_path, size)
+    
+    def get_file_content(self, filename):
+        '''
+        Opens a file if it exists
+        '''
+        
+        # check if the file exists etc.
+        
+        if not self.is_file(filename):
+            return None
+        details = self.get_details(filename)
+        real_file = details.get('real_filename', None)
+        if not real_file:
+            return None
+        real_path = os.path.join(FILES_DEFAULT_PATH, real_file)  if not self.scenario_name \
+        else os.path.join(FILES_DEFAULT_PATH, self.scenario_name, real_file)
+        
+        if not os.path.isfile( real_path ):
+            return None
+            
+        #open file and return content
+        
+        content = ''
+        with open( real_path ) as f:
+            content = f.readlines()
+        return content
