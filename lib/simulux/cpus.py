@@ -26,11 +26,10 @@ consistant! we do not have information on 1 core on idle and 4 cores on system..
 
 class CPUS(object):
     """Define a CPUS object"""
-    def __init__(self):
+    def __init__(self, conf=None):
         super(CPUS, self).__init__()
         # Set the cpu layout
         self.cores = 1
-
         self.data = {
             "user": [],
             "nice": [],
@@ -42,16 +41,34 @@ class CPUS(object):
             "guest": [],
             "idle": []
         }
-
         # Set default layout
         self.set_layout()
-
+        
+        # Add scenario specific CPUs
+        if conf:
+            default_layout = load_layout()
+            # Load the values from config file - if value is not set, use the default value
+            self.cores = conf.get('cores', default_layout.get('cores'))
+            
+            cpu_conf = conf.get('cpus', None)
+            if not cpu_conf:
+                self.set_layout()
+            else:
+                self.data['user'] = conf['cpus'].get('user', default_layout.get('user'))
+                self.data['nice'] = conf['cpus'].get('nice', default_layout.get('nice'))
+                self.data['system'] = conf['cpus'].get('system', default_layout.get('system'))
+                self.data['iowait'] = conf['cpus'].get('iowait', default_layout.get('iowait'))
+                self.data['irq'] = conf['cpus'].get('irq', default_layout.get('irq'))
+                self.data['soft'] = conf['cpus'].get('soft', default_layout.get('soft'))
+                self.data['steal'] = conf['cpus'].get('steal', default_layout.get('steal'))
+                self.data['guest'] = conf['cpus'].get('guest', default_layout.get('guest'))
+                self.data['idle'] = conf['cpus'].get('idle', default_layout.get('idle'))
+            
     def set_layout(self, layout_file=None):
         '''
         Set the CPU configuration based on the default layout (or get it overriden)
         '''
         layout = load_layout(layout_file)
-
         self.cores = layout.get('cores')
 
         self.data['user'] = layout.get('user')
