@@ -26,26 +26,40 @@ class Processes(object):
     '''
     Meta class to handle all the processes of an environment / server
     '''
-    def __init__(self, cpus={}, disks={}, memory={}):
+    def __init__(self, cpus={}, disks={}, memory={}, conf=None):
         super(Processes, self).__init__()
 
         # Capture the args
         self.cpus = cpus
         self.disks = disks
         self.memory = memory
-
+        
         # Store all the processes in a array
         self.processes = {}
 
         # Add default layout
         self.set_layout()
+        
+        # Add scenario specific processes
+        if conf:
+            processes_conf = conf.get('processes', [])
+            for process_conf in processes_conf:
+                # Create a process and add it to the list
+                process = Process(
+                    config=process_conf,
+                    cpus=self.cpus,
+                    disks=self.disks,
+                    memory=self.memory
+                )
+                self.processes.update({process_conf.get('pid'): process})
+
 
     def set_layout(self):
         '''
         Set the default processes layout
         '''
         layout = load_layout()
-
+    
         for item in layout:
             process = Process(
                 config=item, 

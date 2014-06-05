@@ -17,14 +17,15 @@ class Environment(object):
         Add a server to the Environment
         '''
         server = {}
-        server.update({'memory': Memory()})
-        server.update({'disks': Disks()})
-        server.update({'cpus': CPUS()})
+        server.update({'memory': Memory(details)})
+        server.update({'disks': Disks(details)})
+        server.update({'cpus': CPUS(details)})
         server.update({
             'processes': Processes(
                 cpus=server.get('cpus'), 
                 memory=server.get('memory'),
-                disks=server.get('disks')
+                disks=server.get('disks'),
+                conf=details
             )
         })
         return server
