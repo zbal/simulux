@@ -2,6 +2,6 @@
 #
 # MIT license.
 #
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = 'Vincent Viallet'
 __author_email__ = 'vincent.viallet@gmail.com'
