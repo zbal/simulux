@@ -23,16 +23,25 @@ Defines the operaton related to the Disk, including:
 
 class Disks(object):
     """Define a Disks object"""
-    def __init__(self, scenario_name):
+    def __init__(self, conf=None):
         super(Disks, self).__init__()
-        # Set the fs layout
+        
         self.disks = {}
         self.partitions = {}
         self.files = {}
+        
         # Add default layout
         self.add_layout()
-        # Save the scenario name,  in case of file access, to determine the location of the files
-        self.scenario_name = scenario_name
+        
+        # Add scenario specific disks
+        if conf:
+            self.disks.update(conf.get('disks', {}))
+            self.partitions.update(conf.get('partitions', {}))
+    
+            # Need to process files for more conveniency
+            files = conf.get('files', {})
+            self._process_mounts(files)
+        
 
     def add_layout(self, layout_file=None):
         '''
