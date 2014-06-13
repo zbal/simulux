@@ -23,7 +23,6 @@ Defines the operaton related to the Disk, including:
 
 class Disks(object):
     """Define a Disks object"""
-<<<<<<< HEAD
     def __init__(self, conf=None):
         super(Disks, self).__init__()
         
