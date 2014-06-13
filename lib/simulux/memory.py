@@ -27,20 +27,35 @@ All is stored in bytes
 
 class Memory(object):
     """Define a Memory object"""
-    def __init__(self):
+    def __init__(self, conf=None):
         super(Memory, self).__init__()
-
+        
         self.data = {
-            "free": 0,
-            "used": 0,
-            "buffers": 0,
-            "shared": 0,
-            "cached": 0,
-            "total": 0
-        }
+                "free": 0,
+                "used": 0,
+                "buffers": 0,
+                "shared": 0,
+                "cached": 0,
+                "total": 0
+            }
 
         # Set default layout
         self.set_layout()
+        
+        # Add scenario specific memory data
+        
+        if conf: 
+            self.data.update({'used': conf['memory'].get('used', 0)})
+            self.data.update({'buffers': conf['memory'].get('buffers', 0)})
+            self.data.update({'shared': conf['memory'].get('shared', 0)})
+            self.data.update({'cached': conf['memory'].get('cached', 0)})
+            self.data.update({'total': conf['memory'].get('total', 0)})
+            self.data.update({'free': conf['memory'].get('free', int(self.data['total'])-int(self.data['used']))})
+            
+            assert self.data['used'] <= self.data['total']
+            assert self.data['free'] <= self.data['total']
+            assert self.data['used'] + self.data['free'] == self.data['total']
+            
 
     def set_layout(self, layout_file=None):
         '''
